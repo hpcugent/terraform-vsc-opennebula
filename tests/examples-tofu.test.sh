@@ -10,7 +10,6 @@ fi
 
 LOCALMODE=false
 while IFS= read -r -d '' file; do
-    info "checking $file"
     if grep -q "../../" "$file"; then
         LOCALMODE=true
         info "$(grep -q "../../" "$file")"
