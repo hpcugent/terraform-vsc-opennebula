@@ -13,7 +13,7 @@ LOCAL_BASE='"../../"'
 REMOTE_BASE='"hpcugent/vsc/opennebula"'
 LOCAL_ROUTER_BASE='"../../modules/router"'
 REMOTE_ROUTER_BASE='"hpcugent/vsc/opennebula//submodules/router"'
-VERSION='0.0.1'
+VERSION='0.0.3'
 
 find "$ROOT_DIR/examples" -type f -name 'main.tf' -print0 |
 while IFS= read -r -d '' file; do
