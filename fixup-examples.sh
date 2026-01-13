@@ -15,7 +15,9 @@ LOCAL_ROUTER_BASE='"../../modules/router"'
 REMOTE_ROUTER_BASE='"hpcugent/opennebula/vsc//modules/router"'
 VERSION='0.0.3'
 
-find "$ROOT_DIR/examples" -type f -name 'main.tf' -print0 |
+find "$ROOT_DIR/examples" \
+  -type d -name '.terraform' -prune -o \
+  -type f -name 'main.tf' -print0 |
 while IFS= read -r -d '' file; do
     if [[ "$MODE" == "remote" ]]; then
         sed -i \
