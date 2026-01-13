@@ -9,15 +9,18 @@ if [[ "$MODE" != "remote" && "$MODE" != "local" ]]; then
   exit 1
 fi
 
-LOCAL_BASE='../../'
-REMOTE_BASE='hpcugent/vsc/opennebula'
-VERSION='0.0.1'
+LOCAL_BASE='"../../"'
+REMOTE_BASE='"hpcugent/vsc/opennebula"'
+LOCAL_ROUTER_BASE='"../../modules/router"'
+REMOTE_ROUTER_BASE='"hpcugent/vsc/opennebula//submodules/router"'
+VERSION='0.0.3'
 
 find "$ROOT_DIR/examples" -type f -name 'main.tf' -print0 |
 while IFS= read -r -d '' file; do
     if [[ "$MODE" == "remote" ]]; then
         sed -i \
         -e "s|$LOCAL_BASE|$REMOTE_BASE|g" \
+        -e "s|$LOCAL_ROUTER_BASE|$REMOTE_ROUTER_BASE|g" \
         -e "s|^[[:space:]]*#\s*version.*$|  version = \"$VERSION\"|" \
         "$file" 
         tofu fmt -list=false "$file" 
@@ -28,6 +31,7 @@ while IFS= read -r -d '' file; do
     elif ! grep -q "# version" "$file"; then
         sed -i \
         -e "s|$REMOTE_BASE|$LOCAL_BASE|g" \
+        -e "s|$REMOTE_ROUTER_BASE|$LOCAL_ROUTER_BASE|g" \
         -e "s|version *=|# version = |g" \
         "$file"
         tofu fmt -list=false "$file"

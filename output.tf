@@ -10,9 +10,6 @@ output "ip" {
   description = "Local VM IP."
   value       = opennebula_virtual_machine.main.ip
 }
-output "ports" {
-  value = local.ports
-}
 output "router_access" {
   description = "Returns information for the router module."
   value = {

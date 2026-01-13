@@ -1,7 +1,7 @@
 # Router definition
 module "router" {
-  source  = "hpcugent/vsc/opennebularouter"
-  version = "0.0.1"
+  source  = "hpcugent/vsc/opennebula//submodules/router"
+  version = "0.0.3"
   #VM Which we can ssh to by default
   access_vm = module.Main.router_access
   port_forwards = {
@@ -17,7 +17,7 @@ module "router" {
 }
 module "Main" {
   source            = "hpcugent/vsc/opennebula"
-  version           = "0.0.1"
+  version           = "0.0.3"
   vm_name           = "MultipleExampleMain"
   image_name        = "Rocky 9"
   start_script      = "dnf install -y nginx && systemctl enable --now nginx" # Run install script on creation
@@ -26,7 +26,7 @@ module "Main" {
 }
 module "Secondary" {
   source            = "hpcugent/vsc/opennebula"
-  version           = "0.0.1"
+  version           = "0.0.3"
   vm_name           = "MultipleExampleSecondary"
   image_name        = "Ubuntu 24.04"
   start_script      = "apt install -y nginx && systemctl enable --now nginx" # Run install script on creation
