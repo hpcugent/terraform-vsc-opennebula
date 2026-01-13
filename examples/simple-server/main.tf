@@ -1,6 +1,6 @@
 # Router definition
 module "router" {
-  source  = "hpcugent/vsc/opennebularouter"
+  source  = "hpcugent/vsc/opennebula//submodules/router"
   version = "0.0.1"
   # VM Which we can ssh to by default
   access_vm = module.SimpleVM.router_access
