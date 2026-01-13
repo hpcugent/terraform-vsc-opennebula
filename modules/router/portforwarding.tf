@@ -4,36 +4,7 @@ locals {
     max = 59999
   }
 }
-variable "port_forwards" {
-  type = map(object({
-    internal_ip   = optional(string)
-    internal_port = optional(number)
-    external_port = number
-  }))
-  default = {}
-  validation {
-    condition = (
-      length(var.port_forwards) == 0 ? true :
-      alltrue([
-        for v in var.port_forwards :
-        (
-          v.external_port == 80 || v.external_port == 443 ||
-          (
-            v.external_port >= local.ugent_port_range.min &&
-            v.external_port <= local.ugent_port_range.max
-          )
-        )
-      ])
-    )
-    error_message = "External port must be 80, 443, or between ${local.ugent_port_range.min} and ${local.ugent_port_range.max}."
-  }
-  description = <<-EOF
-  List of port forwarding rules.
-  internal_ip (optional) default: access_vm IP
-  internal_port (optional) default: external_port
-  external_port (required) MUST be between 51001 and 59999 OR port 80/443
-EOF
-}
+
 variable "access_vm" {
   type = object({
     ip          = string
@@ -85,11 +56,4 @@ locals {
 
 }
 
-output "services_list" {
-  value = merge(
-    { "Primary VM" = local.primary_vm_output },
-    { for name, svc in var.port_forwards :
-      "${name}" => "${opennebula_virtual_router_nic.external.ip}:${svc.external_port}"
-    }
-  )
-}
+
