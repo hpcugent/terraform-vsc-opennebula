@@ -5,7 +5,7 @@ TEST_SCRIPTS=(
   "./module-tofu.test.sh"
   "./examples-tofu.test.sh"
   "./tofu-fmt.test.sh"
-  #"./local-module-check.test.sh"
+  "./local-module-check.test.sh" # This one should always be last
 )
 
 # Array to hold exit codes
@@ -17,7 +17,6 @@ for script in "${TEST_SCRIPTS[@]}"; do
   EXIT_CODES+=($?)  # store exit code
   echo ""
 done
-
 # Check if any failed
 FAILED=()
 for i in "${!TEST_SCRIPTS[@]}"; do

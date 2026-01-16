@@ -1,12 +1,12 @@
 # Router definition
 module "router" {
-  source  = "hpcugent/vsc/opennebula//submodules/router"
+  source  = "hpcugent/opennebula/vsc//modules/router"
   version = "0.0.3"
   #VM Which we can ssh/rdp to by default
   access_vm = module.vsc-opennebula.router_access
 }
 module "vsc-opennebula" {
-  source        = "hpcugent/vsc/opennebula"
+  source        = "hpcugent/opennebula/vsc"
   version       = "0.0.3"
   vm_name       = "JonTest"
   image_name    = "Windows 11"

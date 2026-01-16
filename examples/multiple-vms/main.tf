@@ -1,6 +1,6 @@
 # Router definition
 module "router" {
-  source  = "hpcugent/vsc/opennebula//submodules/router"
+  source  = "hpcugent/opennebula/vsc//modules/router"
   version = "0.0.3"
   #VM Which we can ssh to by default
   access_vm = module.Main.router_access
@@ -16,7 +16,7 @@ module "router" {
   }
 }
 module "Main" {
-  source            = "hpcugent/vsc/opennebula"
+  source            = "hpcugent/opennebula/vsc"
   version           = "0.0.3"
   vm_name           = "MultipleExampleMain"
   image_name        = "Rocky 9"
@@ -25,7 +25,7 @@ module "Main" {
   firewall_services = ["http"] # Automatically allows ports 80 & 443
 }
 module "Secondary" {
-  source            = "hpcugent/vsc/opennebula"
+  source            = "hpcugent/opennebula/vsc"
   version           = "0.0.3"
   vm_name           = "MultipleExampleSecondary"
   image_name        = "Ubuntu 24.04"

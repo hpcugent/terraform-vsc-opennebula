@@ -10,12 +10,14 @@ if [[ "$MODE" != "remote" && "$MODE" != "local" ]]; then
 fi
 
 LOCAL_BASE='"../../"'
-REMOTE_BASE='"hpcugent/vsc/opennebula"'
+REMOTE_BASE='"hpcugent/opennebula/vsc"'
 LOCAL_ROUTER_BASE='"../../modules/router"'
-REMOTE_ROUTER_BASE='"hpcugent/vsc/opennebula//submodules/router"'
+REMOTE_ROUTER_BASE='"hpcugent/opennebula/vsc//modules/router"'
 VERSION='0.0.3'
 
-find "$ROOT_DIR/examples" -type f -name 'main.tf' -print0 |
+find "$ROOT_DIR/examples" \
+  -type d -name '.terraform' -prune -o \
+  -type f -name 'main.tf' -print0 |
 while IFS= read -r -d '' file; do
     if [[ "$MODE" == "remote" ]]; then
         sed -i \

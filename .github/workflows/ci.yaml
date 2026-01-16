@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        check:
+          - name: local-module-check
+            run: ./tests/local-module-check.test.sh
+          - name: fmt-check
+            run: ./tests/tofu-fmt.test.sh
+
+    name: ${{ matrix.check.name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: "1.11.0"
+
+      - run: tofu version
+      - run: chmod +x tests/*.sh
+      - run: ${{ matrix.check.run }}
