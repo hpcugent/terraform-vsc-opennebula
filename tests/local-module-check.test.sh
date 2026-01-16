@@ -1,4 +1,6 @@
 #!/bin/bash
+: "${ROOT_DIR:=$(pwd)}"
+
 if [[ -f "common.sh" ]];then
     source common.sh
 elif [[ -d tests ]];then
