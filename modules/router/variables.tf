@@ -30,10 +30,5 @@ variable "port_forwards" {
     )
     error_message = "External port must be 80, 443, or between ${local.ugent_port_range.min} and ${local.ugent_port_range.max}."
   }
-  description = <<-EOF
-  List of port forwarding rules.
-  internal_ip (optional) default: access_vm IP
-  internal_port (optional) default: external_port
-  external_port (required) MUST be between 51001 and 59999 OR port 80/443
-EOF
+  description = "List of port forwarding rules."
 }
