@@ -1,8 +1,13 @@
+locals {
+  main_net = "${local.group}_${var.use_demo_format ? "vm" : "internal"}"
+  vsc_net = "${local.group}_${var.use_demo_format ? "vm" : "internal_vsc"}"
+}
+
 data "opennebula_virtual_network" "main" {
-  name = "${data.opennebula_group.primary.name}_vm"
+  name = local.main_net
 }
 data "opennebula_virtual_network" "vsc" {
-  name = "${data.opennebula_group.primary.name}_vm_vsc"
+  name = local.vsc_net
   lifecycle {
     enabled = var.vsc
   }

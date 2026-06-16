@@ -1,3 +1,12 @@
+variable "use_demo_format" {
+  type = bool
+  default = true
+  description = "Use VSC demo project format. Only change for dev purposes."
+}
+locals {
+  group = var.use_demo_format ? data.opennebula_group.primary.name : replace(data.opennebula_user.me,"_admin","")
+}
+
 data "opennebula_user" "me" {
   name = chomp(split(":", file("~/.one/one_auth"))[0])
 }
