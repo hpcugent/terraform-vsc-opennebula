@@ -4,7 +4,7 @@ variable "use_demo_format" {
   description = "Use VSC demo project format. Only change for dev purposes."
 }
 locals {
-  group = var.use_demo_format ? data.opennebula_group.primary.name : replace(data.opennebula_user.me,"_admin","")
+  group =  data.opennebula_group.primary.name
 }
 
 data "opennebula_user" "me" {
