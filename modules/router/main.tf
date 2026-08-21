@@ -3,7 +3,7 @@ data "opennebula_user" "me" {
 }
 variable "use_demo_format" {
   type = bool
-  default = true
+  default = false
   description = "Use VSC demo project format. Only change for dev purposes."
 }
 locals {
