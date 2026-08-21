@@ -20,7 +20,6 @@ locals {
     NETWORK        = "YES"
     SET_HOSTNAME   = "${local.router-name}"
     SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]"
-    START_SCRIPT   = "${var.start_script}"
   }
   network_context = {
     # Turn off features we don't use

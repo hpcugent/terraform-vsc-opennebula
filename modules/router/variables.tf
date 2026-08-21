@@ -1,12 +1,3 @@
-variable "start_script" {
-  description = "Script that runs -only once- upon creation of virtual router VMs"
-  type        = string
-  default     = <<EOF
-#!/bin/bash
-iptables -t nat -A POSTROUTING -j MASQUERADE
-sysctl -w net.ipv4.ip_forward=1
-EOF
-}
 variable "port_forwards" {
   type = map(object({
     internal_ip   = optional(string)
