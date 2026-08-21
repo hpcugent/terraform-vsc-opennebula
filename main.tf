@@ -29,6 +29,7 @@ resource "opennebula_virtual_machine" "main" {
   os {
     arch = "x86_64"
     boot = "disk0"
+    machine = "q35"
   }
   disk {
     image_id = data.opennebula_image.image.id
