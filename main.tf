@@ -21,6 +21,7 @@ resource "opennebula_virtual_machine" "main" {
   cpu         = coalesce(var.cpu, data.opennebula_template.template.cpu)
   vcpu        = coalesce(var.cpu, data.opennebula_template.template.cpu)
   memory      = try((var.memory * 1024), data.opennebula_template.template.memory)
+  group       = data.opennebula_group.group.name
   cpumodel {
     model = "host-passthrough"
   }
