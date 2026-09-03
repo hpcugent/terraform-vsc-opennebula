@@ -2,8 +2,8 @@ data "opennebula_user" "me" {
   name = chomp(split(":", file("~/.one/one_auth"))[0])
 }
 variable "use_demo_format" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Use VSC demo project format. Only change for dev purposes."
 }
 locals {
@@ -43,7 +43,7 @@ data "opennebula_template" "base" {
 resource "opennebula_virtual_router" "main" {
   name                 = local.router-name
   instance_template_id = data.opennebula_template.base.id
-  group = data.opennebula_group.group.name
+  group                = data.opennebula_group.group.name
 
 }
 data "opennebula_image" "image" {

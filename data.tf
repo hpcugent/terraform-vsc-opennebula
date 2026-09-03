@@ -1,10 +1,10 @@
 variable "use_demo_format" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Use VSC demo project format. Only change for dev purposes."
 }
 locals {
-  group =  data.opennebula_group.group.name
+  group = data.opennebula_group.group.name
 }
 
 data "opennebula_user" "me" {

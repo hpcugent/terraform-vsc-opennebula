@@ -28,8 +28,8 @@ resource "opennebula_virtual_machine" "main" {
   template_id = data.opennebula_template.template.id
   context     = local.final_context
   os {
-    arch = "x86_64"
-    boot = "disk0"
+    arch    = "x86_64"
+    boot    = "disk0"
     machine = "q35"
   }
   disk {
@@ -59,9 +59,9 @@ resource "opennebula_virtual_machine" "main" {
     content {
       name = "TOPOLOGY"
       elements = {
-        "CORES"   = max(coalesce(var.cpu / 2, data.opennebula_template.template.cpu / 2),1),
-        "SOCKETS" = 1,
-        "THREADS" = 2,
+        "CORES"         = max(coalesce(var.cpu / 2, data.opennebula_template.template.cpu / 2), 1),
+        "SOCKETS"       = 1,
+        "THREADS"       = 2,
         "HUGEPAGE_SIZE" = 1024, # Since this is in the base template, removing it is not allowed.
       }
     }
