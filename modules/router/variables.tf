@@ -29,7 +29,7 @@ variable "group" {
   type        = string
 }
 variable "vsc" {
-  default = false
+  default     = false
   description = "Enable to connect the router to the VSC network. Only ONE per group and you need to have requested access to the VSC network."
-  type    = bool
+  type        = bool
 }
