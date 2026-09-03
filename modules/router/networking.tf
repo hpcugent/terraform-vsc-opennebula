@@ -1,9 +1,9 @@
 locals {
-  vm_network_suffix     = var.vsc ? "vm_vsc" : "vm"
+  vm_network_suffix     = var.vsc ? (var.use_demo_format ? "_vm" : "-private") : (var.use_demo_format ? "_vm_vsc" : "-private-vsc")
   public_network_suffix = var.vsc ? "vsc" : "public"
 
-  public_net = "public"
-  vm_net = "${local.group}_${var.use_demo_format ? local.vm_network_suffix : "internal"}"
+  public_net = var.vsc ? "vsc" : "public"
+  vm_net = "${local.group}${local.vm_network_suffix}"
 }
 
 data "opennebula_virtual_network" "external" {

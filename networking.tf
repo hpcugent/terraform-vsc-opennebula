@@ -1,6 +1,6 @@
 locals {
-  main_net = "${local.group}_${var.use_demo_format ? "vm" : "internal"}"
-  vsc_net = "${local.group}_${var.use_demo_format ? "vm" : "internal_vsc"}"
+  main_net = "${local.group}${var.use_demo_format ? "_vm" : "-private"}"
+  vsc_net  = "${local.group}${var.use_demo_format ? "_vm_vsc" : "-private-vsc"}"
 }
 
 data "opennebula_virtual_network" "main" {
