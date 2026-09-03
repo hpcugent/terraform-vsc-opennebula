@@ -3,7 +3,6 @@ variable "port_forwards" {
     internal_ip   = optional(string)
     internal_port = optional(number)
     external_port = number
-    network       = optional(string, "public")
   }))
   default = {}
   validation {
@@ -21,7 +20,7 @@ variable "port_forwards" {
     )
     error_message = "External port must be 80, 443, or between ${local.ugent_port_range.min} and ${local.ugent_port_range.max}."
   }
-  description = "List of port forwarding rules."
+  description = "List of port forwarding rules. Map of objects with following attributes: external_port (required), internal_port, internal_ip"
 }
 
 variable "group" {
@@ -31,5 +30,6 @@ variable "group" {
 }
 variable "vsc" {
   default = false
+  description = "Enable to connect the router to the VSC network. Only ONE per group and you need to have requested access to the VSC network."
   type    = bool
 }
