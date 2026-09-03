@@ -13,7 +13,7 @@ LOCAL_BASE='"../../"'
 REMOTE_BASE='"hpcugent/opennebula/vsc"'
 LOCAL_ROUTER_BASE='"../../modules/router"'
 REMOTE_ROUTER_BASE='"hpcugent/opennebula/vsc//modules/router"'
-VERSION='0.0.5'
+VERSION='0.0.6'
 
 find "$ROOT_DIR/examples" \
   -type d -name '.terraform' -prune -o \
