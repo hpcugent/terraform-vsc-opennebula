@@ -1,18 +1,8 @@
-variable "start_script" {
-  description = "Script that runs -only once- upon creation of virtual router VMs"
-  type        = string
-  default     = <<EOF
-#!/bin/bash
-iptables -t nat -A POSTROUTING -j MASQUERADE
-sysctl -w net.ipv4.ip_forward=1
-EOF
-}
 variable "port_forwards" {
   type = map(object({
     internal_ip   = optional(string)
     internal_port = optional(number)
     external_port = number
-    network       = optional(string, "public")
   }))
   default = {}
   validation {
@@ -20,7 +10,7 @@ variable "port_forwards" {
       alltrue([
         for v in var.port_forwards :
         (
-          v.network == "vsc" || v.external_port == 80 || v.external_port == 443 ||
+          var.vsc || v.external_port == 80 || v.external_port == 443 ||
           (
             v.external_port >= local.ugent_port_range.min &&
             v.external_port <= local.ugent_port_range.max
@@ -30,7 +20,7 @@ variable "port_forwards" {
     )
     error_message = "External port must be 80, 443, or between ${local.ugent_port_range.min} and ${local.ugent_port_range.max}."
   }
-  description = "List of port forwarding rules."
+  description = "List of port forwarding rules. Map of objects with following attributes: external_port (required), internal_port, internal_ip"
 }
 
 variable "group" {
@@ -39,6 +29,7 @@ variable "group" {
   type        = string
 }
 variable "vsc" {
-  default = false
-  type    = bool
+  default     = false
+  description = "Enable to connect the router to the VSC network. Only ONE per group and you need to have requested access to the VSC network."
+  type        = bool
 }

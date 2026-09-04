@@ -1,7 +1,7 @@
 # Router definition
 module "router" {
   source  = "hpcugent/opennebula/vsc//modules/router"
-  version = "0.0.5"
+  version = "0.0.6"
   #VM Which we can ssh to by default
   access_vm = module.WebServer.router_access
   port_forwards = {
@@ -15,7 +15,7 @@ module "router" {
 }
 module "WebServer" {
   source       = "hpcugent/opennebula/vsc"
-  version      = "0.0.5"
+  version      = "0.0.6"
   vm_name      = "WebExample"
   image_name   = "Rocky Linux 9"
   start_script = "dnf install -y nginx && systemctl enable --now nginx" # Run install script on creation

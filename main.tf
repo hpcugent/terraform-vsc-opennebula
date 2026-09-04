@@ -21,14 +21,16 @@ resource "opennebula_virtual_machine" "main" {
   cpu         = coalesce(var.cpu, data.opennebula_template.template.cpu)
   vcpu        = coalesce(var.cpu, data.opennebula_template.template.cpu)
   memory      = try((var.memory * 1024), data.opennebula_template.template.memory)
+  group       = data.opennebula_group.group.name
   cpumodel {
     model = "host-passthrough"
   }
   template_id = data.opennebula_template.template.id
   context     = local.final_context
   os {
-    arch = "x86_64"
-    boot = "disk0"
+    arch    = "x86_64"
+    boot    = "disk0"
+    machine = "q35"
   }
   disk {
     image_id = data.opennebula_image.image.id
@@ -57,9 +59,10 @@ resource "opennebula_virtual_machine" "main" {
     content {
       name = "TOPOLOGY"
       elements = {
-        "CORES"   = coalesce(var.cpu / 2, data.opennebula_template.template.cpu / 2),
-        "SOCKETS" = 1,
-        "THREADS" = 2,
+        "CORES"         = max(coalesce(var.cpu / 2, data.opennebula_template.template.cpu / 2), 1),
+        "SOCKETS"       = 1,
+        "THREADS"       = 2,
+        "HUGEPAGE_SIZE" = 1024, # Since this is in the base template, removing it is not allowed.
       }
     }
   }

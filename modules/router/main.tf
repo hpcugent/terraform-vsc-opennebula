@@ -1,18 +1,25 @@
 data "opennebula_user" "me" {
   name = chomp(split(":", file("~/.one/one_auth"))[0])
 }
-data "opennebula_group" "primary" {
+variable "use_demo_format" {
+  type        = bool
+  default     = false
+  description = "Use VSC demo project format. Only change for dev purposes."
+}
+locals {
+  group = data.opennebula_group.group.name
+}
+data "opennebula_group" "group" {
   name = var.group != "" ? var.group : null
-  id   = var.group == "" ? data.opennebula_user.me.primary_group : null
+  id   = var.group == "" ? data.opennebula_user.me.groups[0] : null
 }
 
 locals {
-  router-name = "${data.opennebula_group.primary.name}_${var.vsc ? "router_vsc" : "router"}"
+  router-name = "${data.opennebula_group.group.name}_${var.vsc ? "router_vsc" : "router"}"
   base_context = {
     NETWORK        = "YES"
     SET_HOSTNAME   = "${local.router-name}"
     SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]"
-    START_SCRIPT   = "${var.start_script}"
   }
   network_context = {
     # Turn off features we don't use
@@ -36,6 +43,8 @@ data "opennebula_template" "base" {
 resource "opennebula_virtual_router" "main" {
   name                 = local.router-name
   instance_template_id = data.opennebula_template.base.id
+  group                = data.opennebula_group.group.name
+
 }
 data "opennebula_image" "image" {
   name = "vr"
@@ -60,4 +69,5 @@ resource "opennebula_virtual_router_instance" "main" {
     create_before_destroy = true
     replace_triggered_by  = [terraform_data.port-forwards]
   }
+  group = data.opennebula_group.group.name
 }
