@@ -10,7 +10,7 @@ variable "port_forwards" {
       alltrue([
         for v in var.port_forwards :
         (
-          v.network == "vsc" || v.external_port == 80 || v.external_port == 443 ||
+          var.vsc || v.external_port == 80 || v.external_port == 443 ||
           (
             v.external_port >= local.ugent_port_range.min &&
             v.external_port <= local.ugent_port_range.max
