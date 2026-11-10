@@ -10,7 +10,7 @@ variable "port_forwards" {
       alltrue([
         for v in var.port_forwards :
         (
-          var.vsc || v.external_port == 80 || v.external_port == 443 ||
+          var.vsc || v.external_port == 80 || v.external_port == 443 || v.external_port == 22 ||
           (
             v.external_port >= local.ugent_port_range.min &&
             v.external_port <= local.ugent_port_range.max
@@ -21,12 +21,6 @@ variable "port_forwards" {
     error_message = "External port must be 80, 443, or between ${local.ugent_port_range.min} and ${local.ugent_port_range.max}."
   }
   description = "List of port forwarding rules. Map of objects with following attributes: external_port (required), internal_port, internal_ip"
-}
-
-variable "group" {
-  default     = ""
-  description = "Opennebula group to create this router for. There should only be ONE router per group."
-  type        = string
 }
 variable "vsc" {
   default     = false

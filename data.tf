@@ -1,18 +1,8 @@
-variable "use_demo_format" {
-  type        = bool
-  default     = false
-  description = "Use VSC demo project format. Only change for dev purposes."
-}
-locals {
-  group = data.opennebula_group.group.name
-}
-
 data "opennebula_user" "me" {
-  name = chomp(split(":", file("~/.one/one_auth"))[0])
+  id = -1
 }
 data "opennebula_group" "group" {
-  name = var.group != "" ? var.group : null
-  id   = var.group == "" ? data.opennebula_user.me.groups[0] : null
+  id = -1
 }
 
 data "opennebula_template" "template" {

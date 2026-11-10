@@ -2,10 +2,6 @@ output "ssh" {
   description = "SSH Command to use for connecting. (local IP)"
   value       = local.ssh-command
 }
-output "rdp" {
-  description = "RDP Command to use for connecting. (local IP)"
-  value       = local.rdp-command
-}
 output "ip" {
   description = "Local VM IP."
   value       = opennebula_virtual_machine.main.ip
@@ -22,10 +18,13 @@ output "router_access" {
     ip          = opennebula_virtual_machine.main.ip
     include_rdp = var.is_windows
     ssh_port    = local.ports.ssh
-    rdp_port    = local.ports.rdp
     vm_name     = var.vm_name
-    commands    = compact([local.ssh-command, local.rdp-command])
+    command     = local.ssh-command
   }
+}
+output "windows_password" {
+  value     = try(random_pet.windows.id, null)
+  sensitive = true
 }
 locals {
   ssh-user = var.is_windows ? coalesce(var.user, "Admin") : coalesce(var.user, "root")
@@ -36,5 +35,4 @@ locals {
     rdp   = 3389
   }
   ssh-command = "ssh ${local.ssh-user}@${opennebula_virtual_machine.main.ip}"
-  rdp-command = var.is_windows ? "xfreerdp /dynamic-resolution /v:${opennebula_virtual_machine.main.ip} /p:${random_pet.windows.id} /u:admin" : ""
 }

@@ -6,18 +6,20 @@ locals {
     SSH_PUBLIC_KEY = "$USER[SSH_PUBLIC_KEY]"
     GROW_ROOTFS    = "YES"
   }
+  vsc_context = {
+    FILES_DS     = "$FILE[IMAGE_ID=${data.opennebula_image.vsc_routes.id}]"
+    INIT_SCRIPTS = "vsc_vm_routes.sh"
+  }
   windows_context = {
-    START_SCRIPT = "net user Admin ${try(random_pet.windows.id, "")}"
+    START_SCRIPT = "net user Admin ${try(random_pet.windows.id, "")}; sc.exe config sshd start= auto; net start sshd"
   }
   linux_context = {
     START_SCRIPT = "${var.start_script}"
   }
-  final_context = merge(local.base_context, var.custom_context, (var.is_windows ? local.windows_context : local.linux_context))
+  final_context = merge(local.base_context, var.custom_context, (var.is_windows ? local.windows_context : local.linux_context), ((!var.is_windows && var.vsc) ? local.vsc_context : null))
 }
 module "rootdisk" {
   source     = "./modules/disk"
-  group      = data.opennebula_group.group.name
-  user       = data.opennebula_user.me.name
   disk_type  = "image"
   image_name = var.image_name
   name       = "${var.vm_name}_root_${substr(md5(var.image_name), 0, 6)}"
@@ -26,21 +28,22 @@ module "rootdisk" {
 module "disks" {
   for_each   = var.disks
   source     = "./modules/disk"
-  group      = data.opennebula_group.group.name
-  user       = data.opennebula_user.me.name
   disk_type  = each.value.image_id == null ? "disk" : "image"
   image_id   = each.value.image_id
   size       = try(each.value.size * 1024, null)
   name       = each.key
   persistent = true
 }
+data "opennebula_image" "vsc_routes" {
+  name = "vsc_vm_routes.sh"
+}
+
 resource "opennebula_virtual_machine" "main" {
   name        = var.vm_name
   description = "VM"
   cpu         = coalesce(var.cpu, data.opennebula_template.template.cpu)
   vcpu        = coalesce(var.cpu, data.opennebula_template.template.cpu)
   memory      = try((var.memory * 1024), data.opennebula_template.template.memory)
-  group       = data.opennebula_group.group.name
   template_id = data.opennebula_template.template.id
   context     = local.final_context
   os {
@@ -87,7 +90,7 @@ resource "opennebula_virtual_machine" "main" {
       condition     = self.cpu <= local.MAX_CPU
       error_message = "CPU may not exceed ${local.MAX_CPU}."
     }
-    ignore_changes       = [disk]
+    ignore_changes       = [disk, template_section]
     replace_triggered_by = [terraform_data.image]
   }
 }

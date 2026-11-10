@@ -60,11 +60,3 @@ variable "persistent" {
   type    = bool
   default = false
 }
-variable "group" {
-  type        = string
-  description = "group in which the disk needs to be created"
-}
-variable "user" {
-  type        = string
-  description = "user that owns the disk"
-}

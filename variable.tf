@@ -58,7 +58,7 @@ variable "custom_context" {
   default     = {}
 }
 variable "start_script" {
-  description = "Script that runs every boot. Changing this value will execute the script immediately."
+  description = "Script that runs every boot. Changing this value will execute the script immediately. Incompatible with Windows."
   type        = string
   default     = "echo"
   validation {
@@ -71,11 +71,6 @@ variable "is_windows" {
   description = "Set true if image is windows based"
   type        = bool
   default     = false
-}
-variable "group" {
-  default     = ""
-  description = "Opennebula group to create the virtual machine for."
-  type        = string
 }
 variable "user" {
   default     = null

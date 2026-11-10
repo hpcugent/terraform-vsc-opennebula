@@ -1,17 +1,8 @@
 data "opennebula_user" "me" {
-  name = chomp(split(":", file("~/.one/one_auth"))[0])
-}
-variable "use_demo_format" {
-  type        = bool
-  default     = false
-  description = "Use VSC demo project format. Only change for dev purposes."
-}
-locals {
-  group = data.opennebula_group.group.name
+  id = -1
 }
 data "opennebula_group" "group" {
-  name = var.group != "" ? var.group : null
-  id   = var.group == "" ? data.opennebula_user.me.groups[0] : null
+  id = -1
 }
 
 locals {
@@ -30,7 +21,7 @@ locals {
     ONEAPP_VNF_LB_ENABLED             = "NO",
     # NAT
     ONEAPP_VNF_NAT4_ENABLED        = "YES"
-    ONEAPP_VNF_NAT4_INTERFACES_OUT = "eth0"
+    ONEAPP_VNF_NAT4_INTERFACES_OUT = "eth1"
     ONEAPP_VNF_ROUTER4_INTERFACES  = "eth0 eth1"
   }
   final_context = merge(local.base_context, local.network_context, local.port_forward_context)

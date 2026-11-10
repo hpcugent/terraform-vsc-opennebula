@@ -12,7 +12,6 @@ resource "opennebula_image" "image" {
   clone_from_image = try(data.opennebula_image.image.id, null)
   name             = var.name
   permissions      = "660" #USER and GROUP use & manage
-  group            = var.group
   size             = var.size
   type             = var.disk_type == "disk" ? "DATABLOCK" : null
   datastore_id     = 100

@@ -2,7 +2,7 @@
 # Same definition as in other examples
 module "router" {
   source    = "hpcugent/opennebula/vsc//modules/router"
-  version   = "0.0.11"
+  version   = "0.0.12"
   access_vm = module.SimpleVSCVM.router_access
 }
 output "publicServices" {
@@ -11,7 +11,7 @@ output "publicServices" {
 # VSC Router definition
 module "VSCrouter" {
   source    = "hpcugent/opennebula/vsc//modules/router"
-  version   = "0.0.11"
+  version   = "0.0.12"
   vsc       = true                             # Connect to VSC Public net and VSC Internal net
   access_vm = module.SimpleVSCVM.router_access # Optional, adds SSH forwarding automatically.
 }
@@ -20,7 +20,7 @@ output "VSCServices" {
 }
 module "SimpleVSCVM" {
   source        = "hpcugent/opennebula/vsc"
-  version       = "0.0.11"
+  version       = "0.0.12"
   vm_name       = "SimpleVSCExample"
   image_name    = "Rocky Linux 9"
   cpu           = 4
