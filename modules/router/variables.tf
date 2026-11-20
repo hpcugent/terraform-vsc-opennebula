@@ -20,6 +20,17 @@ variable "port_forwards" {
     )
     error_message = "External port must be 80, 443, or between ${local.ugent_port_range.min} and ${local.ugent_port_range.max}."
   }
+  validation {
+    condition = (
+      alltrue([
+        for v in var.port_forwards :
+        (
+          var.access_vm != null || var.access_vm == null && v.internal_ip != null
+        )
+      ])
+    )
+    error_message = "Can't determine internal ip for port-forwards. Set `internal_ip` in the rule or define `access_vm`"
+  }
   description = "List of port forwarding rules. Map of objects with following attributes: external_port (required), internal_port, internal_ip"
 }
 variable "vsc" {

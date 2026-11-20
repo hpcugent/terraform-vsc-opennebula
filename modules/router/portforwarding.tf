@@ -12,16 +12,17 @@ variable "access_vm" {
   }
 }
 locals {
+  vm_ip = var.vsc ? try(var.access_vm.vsc_ip, null) : try(var.access_vm.ip, null)
   port_forwards_from_vm = var.access_vm == null ? {} : {
     "VM-SSH" = {
-      internal_ip   = var.vsc ? var.access_vm.vsc_ip : var.access_vm.ip
+      internal_ip   = local.vm_ip
       external_port = var.access_vm.ssh_port
       internal_port = var.access_vm.ssh_port
     }
   }
   all_port_forwards = [
     for pf in concat(values(local.port_forwards_from_vm), values(var.port_forwards)) : {
-      internal_ip   = coalesce(pf.internal_ip, var.access_vm.ip)
+      internal_ip   = coalesce(pf.internal_ip, local.vm_ip)
       internal_port = coalesce(pf.internal_port, pf.external_port)
       external_port = pf.external_port
     }

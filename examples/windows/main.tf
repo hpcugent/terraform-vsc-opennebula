@@ -1,13 +1,13 @@
 # Router definition
 module "router" {
   source  = "hpcugent/opennebula/vsc//modules/router"
-  version = "0.0.13"
+  version = "0.0.14"
   #VM Which we can ssh/rdp to by default
   access_vm = module.vsc-opennebula.router_access
 }
 module "vsc-opennebula" {
   source        = "hpcugent/opennebula/vsc"
-  version       = "0.0.13"
+  version       = "0.0.14"
   vm_name       = "WindowsExample"
   image_name    = "Windows 11"
   rootdisk_size = 100 # Give Windows some more space
@@ -17,4 +17,8 @@ module "vsc-opennebula" {
 }
 output "services" {
   value = module.router.services_list # Output the port-forwardings of the router
+}
+output "password" {
+  value     = module.vsc-opennebula.windows_password
+  sensitive = true # Add --show-sensitive to see in clear text
 }
